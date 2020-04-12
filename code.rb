@@ -5,7 +5,7 @@ require 'pry'
 
 file = open('https://covid.ourworldindata.org/data/ecdc/total_deaths.csv')
 csv = CSV.read(file.path, headers: true)
-countries= ['United States', 'France', 'Iran', 'Bosnia and Herzegovina']
+countries= ['United States', 'France', 'Iran', 'Bosnia and Herzegovina', 'South Korea', 'United Kingdom']
 
 # france_adjustment = 
 
@@ -38,7 +38,7 @@ def new_deaths_from_commulative(array)
 end
 
 dates = csv['date']
-start_day=14
+start_day=61
 dates = dates[start_day-1..]
 h = {}
 0.upto(dates.size-1) do |i|
@@ -52,19 +52,18 @@ dates = dates.select! do
   i+=1
   keep || i==numdates || i==0
 end
-
-g = Gruff::Line.new(1400)
+g = Gruff::Line.new(2000)
 g.y_axis_increment = 10
 # g.minimum_value = 0
 g.labels = dates
 
 countries.each do |country|
-  new_deaths = csv[country][61..].map!{|e| e.to_f}
-  new_deaths = new_deaths_from_commulative(new_deaths)
+  commulative_deaths = csv[country][start_day..].map!{|e| e.to_f}
+  new_deaths = new_deaths_from_commulative(commulative_deaths)
   ma = moving_average(new_deaths)
   ma_slope = slope(ma)
-  ma_slope_ma = moving_average(ma_slope, start: start_day, round: 2)
-  g.data country.to_sym, ma_slope_ma[start_day-1..]
+  ma_slope_ma = moving_average(ma_slope, start: 14, round: 2)
+  g.data country.to_sym, ma_slope_ma[14-1..]
 end
 g.write('new.png')
 
