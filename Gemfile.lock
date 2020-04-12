@@ -1,0 +1,21 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    coderay (1.1.2)
+    gruff (0.8.0)
+      rmagick
+    method_source (1.0.0)
+    pry (0.13.0)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
+    rmagick (4.1.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  gruff
+  pry
+
+BUNDLED WITH
+   2.1.2
