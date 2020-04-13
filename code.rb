@@ -104,14 +104,14 @@ def write_deaths_to_graph(region, deaths, graph, commulative: true)
   data = transform_relative_to_100(ma_slope_ma)
   graph.data region.to_sym, data
 end
-countries.each do |country|
-  write_deaths_to_graph(country, csv[country].map!{|e| e.to_f}, g)
-end
 
 nyc_deaths = nyc_csv['Deaths']
 nyc_deaths.map!{|n| 'null' == n ? 0 : n.to_i }
 nyc_deaths = Array.new(62,0)+nyc_deaths
-
 write_deaths_to_graph('NYC', nyc_deaths, g, commulative: false)
+
+countries.each do |country|
+  write_deaths_to_graph(country, csv[country].map!{|e| e.to_f}, g)
+end
 
 g.write('new.png')
