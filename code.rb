@@ -3,6 +3,18 @@ require "csv"
 require 'gruff'
 require 'pry'
 
+class Gruff::Line < Gruff::Base
+  def draw_reference_line(reference_line, left, right, top, bottom)
+    @d = @d.push
+    @d.stroke_color(reference_line[:color] || @reference_line_default_color)
+    @d.fill_opacity 0.0
+    # @d.stroke_dasharray(10, 20)
+    @d.stroke_width 2
+    @d.line(left, top, right, bottom)
+    @d = @d.pop
+  end
+end
+
 # https://www1.nyc.gov/site/doh/covid/covid-19-data.page
 nyc_file = open('./nyc.csv')
 nyc_csv = CSV.read(nyc_file.path, headers: true)
