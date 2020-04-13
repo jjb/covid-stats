@@ -50,9 +50,9 @@ end
 dates = csv['date'].map{|d| d[6..] }
 # 64 removes spain's spike
 # 75 removes germany's spike
-start_day=75
+@start_day=85
 lead_days=13 # days needed for ma and slope calculations
-dates = dates[start_day+lead_days..]
+dates = dates[@start_day+lead_days..]
 h = {}
 0.upto(dates.size-1) do |i|
   h[i]=dates[i]
@@ -75,14 +75,21 @@ g.dot_radius=2
 g.baseline_value = 100
 # g.legend_at_bottom = true
 # g.theme_greyscale
-countries.each do |country|
-  commulative_deaths = csv[country][start_day..].map!{|e| e.to_f}
-  new_deaths = new_deaths_from_commulative(commulative_deaths)
+
+def write_deaths_to_graph(region, deaths, graph, commulative: true)
+  if commulative
+    new_deaths = new_deaths_from_commulative(deaths)
+  else
+    new_deaths = deaths
+  end
+  new_deaths = new_deaths[@start_day..]
   ma = moving_average(new_deaths)
   ma_slope = slope(ma)
   ma_slope_ma = moving_average(ma_slope, round: 2)
   data = transform_relative_to_100(ma_slope_ma)
-  g.data country.to_sym, data
-
+  graph.data region.to_sym, data
+end
+countries.each do |country|
+  write_deaths_to_graph(country, csv[country].map!{|e| e.to_f}, g)
 end
 g.write('new.png')
