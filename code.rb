@@ -11,19 +11,12 @@ countries= ['United States', 'France', 'Iran', 'Bosnia and Herzegovina', 'South 
 # france_adjustment =
 
 def moving_average(array, round: 100)
-  # puts array
   average = array[0..6].sum / 7
   if 7==array.size
     [average]
   else
     [average] + moving_average(array[1..], round: round)
   end
-
-  # (start_day-1...array.size).each do |i|
-  #   average = array[i-period+1..i].sum / period
-  #   a << average.round(round)
-  # end
-  # a
 end
 
 def slope(array)
@@ -35,11 +28,6 @@ def slope(array)
   else
     [s] + slope(array[1..])
   end
-  # (start_day...array.size).each do |i|
-  #   s =
-  #   a << s*100
-  # end
-  # a
 end
 
 def new_deaths_from_commulative(array)
@@ -96,10 +84,6 @@ countries.each do |country|
   ma_slope_ma = moving_average(ma_slope, round: 2)
   data = transform_relative_to_100(ma_slope_ma)
   g.data country.to_sym, data
-  # binding.pry
+
 end
 g.write('new.png')
-
-
-
-
