@@ -67,11 +67,12 @@ dates = dates.select! do
 end
 g = Gruff::Line.new(2000)
 g.y_axis_increment = 10
-# g.minimum_value = 0
+g.minimum_value = 70
 g.labels = dates
 g.title = "Curve Flatness"
 g.line_width=1
 g.dot_radius=2
+g.baseline_value = 100
 # g.legend_at_bottom = true
 # g.theme_greyscale
 countries.each do |country|

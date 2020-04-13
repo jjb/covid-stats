@@ -1,20 +1,25 @@
+GIT
+  remote: https://github.com/topfunky/gruff
+  revision: 728d8c0d5bd33e0fedbc0fb5d6c1e035391b325e
+  specs:
+    gruff (0.8.0)
+      rmagick
+
 GEM
   remote: https://rubygems.org/
   specs:
     coderay (1.1.2)
-    gruff (0.8.0)
-      rmagick
     method_source (1.0.0)
     pry (0.13.0)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    rmagick (4.1.1)
+    rmagick (4.1.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  gruff
+  gruff!
   pry
 
 BUNDLED WITH
