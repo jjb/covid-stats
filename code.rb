@@ -5,8 +5,7 @@ require 'pry'
 
 file = open('https://covid.ourworldindata.org/data/ecdc/total_deaths.csv')
 csv = CSV.read(file.path, headers: true)
-countries= ['United States', 'France', 'Iran', 'Bosnia and Herzegovina', 'South Korea', 'United Kingdom', 'Italy', 'Germany']
-# countries = ['France']
+countries= ['United States', 'France', 'Iran', 'Bosnia and Herzegovina', 'South Korea', 'United Kingdom', 'Italy', 'Germany', 'Spain']
 
 # france_adjustment =
 
