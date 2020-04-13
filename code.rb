@@ -3,6 +3,9 @@ require "csv"
 require 'gruff'
 require 'pry'
 
+# https://www1.nyc.gov/site/doh/covid/covid-19-data.page
+nyc_file = open('./nyc.csv')
+nyc_csv = CSV.read(nyc_file.path, headers: true)
 file = open('https://covid.ourworldindata.org/data/ecdc/total_deaths.csv')
 csv = CSV.read(file.path, headers: true)
 countries= ['United States', 'France', 'Iran', 'Bosnia and Herzegovina', 'South Korea', 'United Kingdom', 'Italy', 'Germany', 'Spain']
@@ -19,7 +22,7 @@ def moving_average(array, round: 100)
 end
 
 def slope(array)
-  s = (array[1]-array[0]) / array[0]
+  s = (array[1]-array[0]) / array[0].to_f
   s = 0 if s.nan? || Float::INFINITY==s
   s = s*100
   if 2==array.size
@@ -92,4 +95,11 @@ end
 countries.each do |country|
   write_deaths_to_graph(country, csv[country].map!{|e| e.to_f}, g)
 end
+
+nyc_deaths = nyc_csv['Deaths']
+nyc_deaths.map!{|n| 'null' == n ? 0 : n.to_i }
+nyc_deaths = Array.new(62,0)+nyc_deaths
+
+write_deaths_to_graph('NYC', nyc_deaths, g, commulative: false)
+
 g.write('new.png')
