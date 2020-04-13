@@ -48,7 +48,6 @@ def transform_relative_to_100(array)
 end
 
 dates = csv['date'].map{|d| d[6..] }
-# on april 12
 # 64 removes spain's spike
 # 75 removes germany's spike
 start_day=75
