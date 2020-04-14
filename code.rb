@@ -95,8 +95,9 @@ end
 g = Gruff::Line.new(2000)
 g.baseline_value = 0
 g.y_axis_increment = 10
+g.y_axis_label = '%'
 g.labels = dates
-g.title = '% Change In Daily Deaths (lower is better)'
+g.title = 'Change In Daily Deaths (lower is better)'
 g.line_width=1
 g.dot_radius=2
 # g.hide_dots = true
@@ -111,6 +112,7 @@ def write_deaths_to_graph(region, deaths, graph, commulative: true)
   end
   new_deaths = new_deaths
   ma = moving_average(new_deaths)
+  last_value = ma.last.round
   ma_slope = slope(ma)
   ma_slope_ma = moving_average(ma_slope, round: 2)
   data = ma_slope_ma
@@ -118,7 +120,8 @@ def write_deaths_to_graph(region, deaths, graph, commulative: true)
   data.each do |e|
     @smallest_value = e if e < @smallest_value
   end
-  graph.data region.to_sym, data
+  name = "#{region} (#{last_value})"
+  graph.data name, data
 end
 g.minimum_value = @smallest_value.floor(-1)
 
@@ -129,7 +132,8 @@ countries.each do |country|
   if @remove_last_day
     data = data[0...-1]
   end
-  write_deaths_to_graph(country, data.map!{|e| e.to_f}, g)
+  data = data.map!{|e| e.to_f}
+  write_deaths_to_graph(country, data, g)
 end
 
 g.write('new.png')
