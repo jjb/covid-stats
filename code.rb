@@ -98,7 +98,7 @@ g.y_axis_increment = 10
 g.labels = dates
 g.title = '% Change In Daily Deaths (lower is better)'
 g.line_width=1
-# g.dot_radius=2
+g.dot_radius=2
 # g.hide_dots = true
 g.theme = Gruff::Themes::RAILS_KEYNOTE
 
