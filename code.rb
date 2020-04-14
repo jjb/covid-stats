@@ -63,8 +63,6 @@ def transform_relative_to_100(array)
 end
 
 dates = csv['date'].map{|d| d[6..] }
-# 64 removes spain's spike
-# 75 removes germany's spike
 lead_days=13 # days needed for ma and slope calculations
 dates = dates[lead_days..]
 @graph_days=10
