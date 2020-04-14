@@ -82,8 +82,8 @@ dates = dates.select! do
   keep || i==numdates || i==0
 end
 g = Gruff::Line.new(2000)
+g.baseline_value = 100
 g.y_axis_increment = 10
-g.minimum_value = 70
 g.labels = dates
 g.title = "Curve Flatness"
 g.line_width=1
@@ -92,6 +92,7 @@ g.baseline_value = 100
 # g.legend_at_bottom = true
 # g.theme_greyscale
 
+@smallest_value=100_000
 def write_deaths_to_graph(region, deaths, graph, commulative: true)
   if commulative
     new_deaths = new_deaths_from_commulative(deaths)
@@ -103,8 +104,13 @@ def write_deaths_to_graph(region, deaths, graph, commulative: true)
   ma_slope = slope(ma)
   ma_slope_ma = moving_average(ma_slope, round: 2)
   data = transform_relative_to_100(ma_slope_ma)
-  graph.data region.to_sym, data[-@graph_days..]
+  data = data[-@graph_days..]
+  data.each do |e|
+    @smallest_value = e if e < @smallest_value
+  end
+  graph.data region.to_sym, data
 end
+g.minimum_value = @smallest_value.floor(-1)
 
 nyc_deaths = nyc_csv['Deaths']
 nyc_deaths.map!{|n| 'null' == n ? 0 : n.to_i }
