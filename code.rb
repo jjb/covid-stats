@@ -65,9 +65,10 @@ end
 dates = csv['date'].map{|d| d[6..] }
 # 64 removes spain's spike
 # 75 removes germany's spike
-@start_day=85
 lead_days=13 # days needed for ma and slope calculations
-dates = dates[@start_day+lead_days..]
+dates = dates[lead_days..]
+@graph_days=10
+dates = dates[-@graph_days..]
 h = {}
 0.upto(dates.size-1) do |i|
   h[i]=dates[i]
@@ -97,12 +98,12 @@ def write_deaths_to_graph(region, deaths, graph, commulative: true)
   else
     new_deaths = deaths
   end
-  new_deaths = new_deaths[@start_day..]
+  new_deaths = new_deaths
   ma = moving_average(new_deaths)
   ma_slope = slope(ma)
   ma_slope_ma = moving_average(ma_slope, round: 2)
   data = transform_relative_to_100(ma_slope_ma)
-  graph.data region.to_sym, data
+  graph.data region.to_sym, data[-@graph_days..]
 end
 
 nyc_deaths = nyc_csv['Deaths']
