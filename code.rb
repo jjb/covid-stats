@@ -20,9 +20,21 @@ nyc_file = open('./nyc.csv')
 nyc_csv = CSV.read(nyc_file.path, headers: true)
 file = open('https://covid.ourworldindata.org/data/ecdc/total_deaths.csv')
 csv = CSV.read(file.path, headers: true)
-countries= ['United States', 'France', 'Iran', 'Bosnia and Herzegovina', 'South Korea', 'United Kingdom', 'Italy', 'Germany', 'Spain']
+# countries= ['United States', 'France', 'Iran', 'Bosnia and Herzegovina', 'South Korea', 'United Kingdom', 'Italy', 'Germany', 'Spain']
+# countries= ['United States', 'South Korea', 'United Kingdom', 'Italy']
+countries= ['United States', 'France', 'South Korea', 'United Kingdom', 'Italy']
+
+# women leaders
+# countries= ['United States', 'Germany', 'Taiwan', 'New Zealand', 'Iceland', 'Finland', 'Norway', 'Denmark']
 
 # france_adjustment =
+
+nyc_deaths = nyc_csv['Deaths']
+nyc_deaths = Array.new(62,0)+nyc_deaths
+if nyc_deaths.size == csv['date'].size-1
+  @remove_last_day=true
+end
+nyc_deaths.map!{|n| 'null' == n ? 0 : n.to_i }
 
 def moving_average(array, round: 100)
   average = array[0..6].sum / 7
@@ -63,9 +75,10 @@ def transform_relative_to_100(array)
 end
 
 dates = csv['date'].map{|d| d[6..] }
+dates = dates[0...-1] if @remove_last_day
 lead_days=13 # days needed for ma and slope calculations
 dates = dates[lead_days..]
-@graph_days=10
+@graph_days=28
 dates = dates[-@graph_days..]
 h = {}
 0.upto(dates.size-1) do |i|
@@ -80,15 +93,14 @@ dates = dates.select! do
   keep || i==numdates || i==0
 end
 g = Gruff::Line.new(2000)
-g.baseline_value = 100
+g.baseline_value = 0
 g.y_axis_increment = 10
 g.labels = dates
-g.title = "Curve Flatness"
+g.title = '% Change In Daily Deaths (lower is better)'
 g.line_width=1
-g.dot_radius=2
-g.baseline_value = 100
-# g.legend_at_bottom = true
-# g.theme_greyscale
+# g.dot_radius=2
+# g.hide_dots = true
+g.theme = Gruff::Themes::RAILS_KEYNOTE
 
 @smallest_value=100_000
 def write_deaths_to_graph(region, deaths, graph, commulative: true)
@@ -101,7 +113,7 @@ def write_deaths_to_graph(region, deaths, graph, commulative: true)
   ma = moving_average(new_deaths)
   ma_slope = slope(ma)
   ma_slope_ma = moving_average(ma_slope, round: 2)
-  data = transform_relative_to_100(ma_slope_ma)
+  data = ma_slope_ma
   data = data[-@graph_days..]
   data.each do |e|
     @smallest_value = e if e < @smallest_value
@@ -110,13 +122,14 @@ def write_deaths_to_graph(region, deaths, graph, commulative: true)
 end
 g.minimum_value = @smallest_value.floor(-1)
 
-nyc_deaths = nyc_csv['Deaths']
-nyc_deaths.map!{|n| 'null' == n ? 0 : n.to_i }
-nyc_deaths = Array.new(62,0)+nyc_deaths
 write_deaths_to_graph('NYC', nyc_deaths, g, commulative: false)
 
 countries.each do |country|
-  write_deaths_to_graph(country, csv[country].map!{|e| e.to_f}, g)
+  data = csv[country]
+  if @remove_last_day
+    data = data[0...-1]
+  end
+  write_deaths_to_graph(country, data.map!{|e| e.to_f}, g)
 end
 
 g.write('new.png')
