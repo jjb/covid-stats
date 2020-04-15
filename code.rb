@@ -1,4 +1,4 @@
-require "open-uri"
+require 'down'
 require "csv"
 require 'gruff'
 require 'pry'
@@ -16,9 +16,9 @@ class Gruff::Line < Gruff::Base
 end
 
 # https://www1.nyc.gov/site/doh/covid/covid-19-data.page
-nyc_file = open('./nyc.csv')
+nyc_file = Down.download('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/case-hosp-death.csv')
 nyc_csv = CSV.read(nyc_file.path, headers: true)
-file = open('https://covid.ourworldindata.org/data/ecdc/total_deaths.csv')
+file = Down.download('https://covid.ourworldindata.org/data/ecdc/total_deaths.csv')
 csv = CSV.read(file.path, headers: true)
 # countries= ['United States', 'France', 'Iran', 'Bosnia and Herzegovina', 'South Korea', 'United Kingdom', 'Italy', 'Germany', 'Spain']
 # countries= ['United States', 'South Korea', 'United Kingdom', 'Italy']
@@ -29,7 +29,7 @@ countries= ['United States', 'France', 'South Korea', 'United Kingdom', 'Italy']
 
 # france_adjustment =
 
-nyc_deaths = nyc_csv['Deaths']
+nyc_deaths = nyc_csv['DEATH_COUNT']
 nyc_deaths = Array.new(62,0)+nyc_deaths
 if nyc_deaths.size == csv['date'].size-1
   @remove_last_day=true
