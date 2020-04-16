@@ -120,8 +120,6 @@ def write_deaths_to_graph(region, deaths, graph, commulative: true)
   name = "#{region} (#{last_value})"
   graph.data name, data
 end
-g.minimum_value = @smallest_value.floor(-1)
-
 write_deaths_to_graph('NYC', nyc_deaths, g, commulative: false)
 
 countries.each do |country|
@@ -130,4 +128,5 @@ countries.each do |country|
   write_deaths_to_graph(country, data, g)
 end
 
+g.minimum_value = @smallest_value.floor(-1)
 g.write('new.png')
