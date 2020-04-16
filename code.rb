@@ -30,10 +30,8 @@ countries= ['United States', 'France', 'South Korea', 'United Kingdom', 'Italy']
 # france_adjustment =
 
 nyc_deaths = nyc_csv['DEATH_COUNT']
-nyc_deaths = Array.new(62,0)+nyc_deaths
-if nyc_deaths.size == csv['date'].size-1
-  @remove_last_day=true
-end
+nyc_shift = nyc_deaths.size == csv['date'].size-1 ? 1 : 0
+nyc_deaths = Array.new(62+nyc_shift,0)+nyc_deaths
 nyc_deaths.map!{|n| 'null' == n ? 0 : n.to_i }
 
 def moving_average(array, round: 100)
@@ -75,7 +73,6 @@ def transform_relative_to_100(array)
 end
 
 dates = csv['date'].map{|d| d[6..] }
-dates = dates[0...-1] if @remove_last_day
 lead_days=13 # days needed for ma and slope calculations
 dates = dates[lead_days..]
 @graph_days=28
@@ -129,9 +126,6 @@ write_deaths_to_graph('NYC', nyc_deaths, g, commulative: false)
 
 countries.each do |country|
   data = csv[country]
-  if @remove_last_day
-    data = data[0...-1]
-  end
   data = data.map!{|e| e.to_f}
   write_deaths_to_graph(country, data, g)
 end
