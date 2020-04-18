@@ -3,10 +3,10 @@
 
 `bundle install`
 
-# iterm
+### iterm
 `bundle exec ruby code.rb && imgcat new.png`
 
-# terminal
+### terminal
 `bundle exec ruby code.rb && open new.png`
 
 ## Example output
@@ -24,7 +24,7 @@ Values at 0 indicate "the curve is flat"
 
 Values below zero indicate there are fewer deaths each day.
 
-Some more discussion here: https://twitter.com/johnjoseph/status/1249506112413589504
+Some more discussion here: https://twitter.com/johnjoseph/status/1249506116901494785
 
 ## I'm not a statistitian!
 
