@@ -3,6 +3,9 @@ require_relative './governors.rb'
 class USA
   attr_accessor :democrat_governors, :republican_governors, :states
 
+  TERRITORIES = [ 'Virgin Islands', 'District of Columbia', 'Puerto Rico',
+                  'Guam', 'Northern Mariana Islands', 'American Samoa' ]
+
   def initialize(world_dates)
     us_file = Down.download('https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv')
     us_csv = CSV.read(us_file.path, headers: true)
@@ -38,11 +41,10 @@ class USA
 
     @democrat_governors = []
     @republican_governors = []
-    [ 'Virgin Islands', 'District of Columbia', 'Puerto Rico',
-      'Guam', 'Northern Mariana Islands', 'American Samoa'].each do |region|
-      @states.delete(region)
+    states_with_governors = @states.filter do |region, _|
+      !TERRITORIES.include? region
     end
-    @states.each do |state, data|
+    states_with_governors.each do |state, data|
       if DEMOCRAT_GOVERNORS.include?(state)
         governors = @democrat_governors
       elsif REPUBLICAN_GOVERNORS.include?(state)

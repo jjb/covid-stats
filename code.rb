@@ -22,11 +22,13 @@ nyc = NYC.new
 # countries=['Sweden', 'Iceland', 'Denmark', 'Norway', 'Estonia', 'Finland']
 # countries=[]
 # women leaders
-# countries= ['United States', 'Germany', 'Taiwan', 'New Zealand', 'Iceland', 'Finland', 'Norway', 'Denmark']
-states=['New York', 'New Jersey', 'Massachusetts', 'Louisiana', 'Connecticut', 'Rhode Island']
-states=[]
+# countries= ['United States']
+# states=['New York', 'New Jersey', 'Massachusetts', 'Louisiana', 'Connecticut', 'Rhode Island']
+states = USA::TERRITORIES - ["District of Columbia"]
+countries=[]
+# states=[]
 nyc=false
-governors=true
+governors=false
 
 dates = world.dates
 @graph_days=21
@@ -68,8 +70,8 @@ def write_deaths_to_graph(region, new_deaths, graph, color: nil)
   name = "#{region} (#{last_value})"
   graph.data name, data, color
 end
-write_deaths_to_graph('NYC', nyc.data, g) if nyc
 
+write_deaths_to_graph('NYC', nyc.data, g) if nyc
 if governors
   write_deaths_to_graph('Democrat Governors', usa.democrat_governors, g, color: '#00AEF3')
   write_deaths_to_graph('Republican Governors', usa.republican_governors, g, color: '#DE0100')
@@ -78,7 +80,6 @@ countries.each do |country|
   data = world.get_country(country)
   write_deaths_to_graph(country, data, g)
 end
-
 states.each do |state|
   data = usa.states[state]
   write_deaths_to_graph(state, data, g)
