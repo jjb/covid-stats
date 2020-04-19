@@ -6,6 +6,8 @@ class World
     @data = CSV.read(file.path, headers: true)
     @dates = @data['date']
     @dates = dates[lead_days..]
+
+    governors = File.open('./governors.csv')
   end
 
   def get_country(country)

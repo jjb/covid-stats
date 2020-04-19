@@ -1,6 +1,7 @@
-# require "csv"
+require_relative './governors.rb'
 
 class USA
+  attr_accessor :democrat_governors, :republican_governors, :states
 
   def initialize(world_dates)
     us_file = Down.download('https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv')
@@ -34,9 +35,25 @@ class USA
     @states.each do |state, data|
       @states[state] = data.delta_from_commulative
     end
-  end
 
-  def states
-    @states
+    @democrat_governors = []
+    @republican_governors = []
+    [ 'Virgin Islands', 'District of Columbia', 'Puerto Rico',
+      'Guam', 'Northern Mariana Islands', 'American Samoa'].each do |region|
+      @states.delete(region)
+    end
+    @states.each do |state, data|
+      if DEMOCRAT_GOVERNORS.include?(state)
+        governors = @democrat_governors
+      elsif REPUBLICAN_GOVERNORS.include?(state)
+        governors = @republican_governors
+      else
+        raise
+      end
+
+      data.each_with_index do |value, i|
+        governors[i] = governors[i].to_f + value
+      end
+    end
   end
 end

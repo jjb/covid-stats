@@ -26,6 +26,7 @@ nyc = NYC.new
 states=['New York', 'New Jersey', 'Massachusetts', 'Louisiana', 'Connecticut', 'Rhode Island']
 states=[]
 nyc=false
+governors=true
 
 dates = world.dates
 @graph_days=21
@@ -69,6 +70,10 @@ def write_deaths_to_graph(region, new_deaths, graph)
 end
 write_deaths_to_graph('NYC', nyc.data, g) if nyc
 
+if governors
+  write_deaths_to_graph('Democrat Governors', usa.democrat_governors, g)
+  write_deaths_to_graph('Republican Governors', usa.republican_governors, g)
+end
 countries.each do |country|
   data = world.get_country(country)
   write_deaths_to_graph(country, data, g)
