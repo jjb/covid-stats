@@ -55,7 +55,7 @@ g.dot_radius=2
 g.theme = Gruff::Themes::RAILS_KEYNOTE
 
 @smallest_value=100_000
-def write_deaths_to_graph(region, new_deaths, graph)
+def write_deaths_to_graph(region, new_deaths, graph, color: nil)
   ma = new_deaths.moving_average
   last_value = ma.last.round
   ma_slope = ma.slope
@@ -66,13 +66,13 @@ def write_deaths_to_graph(region, new_deaths, graph)
     @smallest_value = e if e < @smallest_value
   end
   name = "#{region} (#{last_value})"
-  graph.data name, data
+  graph.data name, data, color
 end
 write_deaths_to_graph('NYC', nyc.data, g) if nyc
 
 if governors
-  write_deaths_to_graph('Democrat Governors', usa.democrat_governors, g)
-  write_deaths_to_graph('Republican Governors', usa.republican_governors, g)
+  write_deaths_to_graph('Democrat Governors', usa.democrat_governors, g, color: '#00AEF3')
+  write_deaths_to_graph('Republican Governors', usa.republican_governors, g, color: '#DE0100')
 end
 countries.each do |country|
   data = world.get_country(country)
