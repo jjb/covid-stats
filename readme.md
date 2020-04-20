@@ -3,6 +3,9 @@
 
 `bundle install`
 
+Go into code.rb and read the comments at the top to configure
+what you want to graph.
+
 ### iterm
 `bundle exec ruby code.rb && imgcat new.png`
 
