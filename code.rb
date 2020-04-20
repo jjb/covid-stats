@@ -23,6 +23,9 @@ nyc = NYC.new
 # countries=[]
 # women leaders
 # countries= ['United States']
+# top 6 deaths/capita
+countries= ['Belgium', 'Spain', 'Italy', 'France', 'United Kingdom', 'Netherlands', 'Switzerland']
+
 # states=['New York', 'New Jersey', 'Massachusetts', 'Louisiana', 'Connecticut', 'Rhode Island']
 states = USA::TERRITORIES - ["District of Columbia"]
 countries=[]
