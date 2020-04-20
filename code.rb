@@ -1,3 +1,30 @@
+# countries in the news? idk
+# countries= ['United States', 'France', 'United Kingdom', 'South Korea', 'Italy', 'Sweden']
+# euro-scandanavian
+# countries=['Sweden', 'Iceland', 'Denmark', 'Norway', 'Estonia', 'Finland']
+# countries with most deaths/capita
+# countries= ['Belgium', 'Spain', 'Italy', 'France', 'United Kingdom', 'Netherlands', 'Switzerland']
+countries=[]
+
+# states with most deaths/capita
+# states=['New York', 'New Jersey', 'Massachusetts', 'Louisiana', 'Connecticut', 'Rhode Island']
+# island territories
+# states = USA::TERRITORIES - ["District of Columbia"]
+states=[]
+
+# Include NYC?
+include_nyc=false
+
+# Include states grouped by D vs. R governors?
+# see usa.rb if you want to exclude NY
+governors=false
+
+# How many days should the graph show?
+@graph_days=14
+
+################################################################################
+################################################################################
+################################################################################
 require 'down'
 require "csv"
 require_relative './array_stats.rb'
@@ -8,33 +35,15 @@ require 'pry'
 require_relative './world.rb'
 require_relative './usa.rb'
 require_relative './nyc.rb'
-
-# days needed for ma and slope calculations
+# days needed for ma and slope calculations, hardcoded because
+# 7-day moving average is hardcoded
 lead_days=13
 
 world = World.new(lead_days)
 usa = USA.new(world.dates)
 nyc = NYC.new
 
-# countries= ['United States', 'France', 'Iran', 'Bosnia and Herzegovina', 'South Korea', 'United Kingdom', 'Italy', 'Germany', 'Spain']
-# countries= ['United States', 'South Korea', 'United Kingdom', 'Italy']
-# countries= ['United States', 'France', 'United Kingdom', 'South Korea', 'Italy', 'Sweden']
-# countries=['Sweden', 'Iceland', 'Denmark', 'Norway', 'Estonia', 'Finland']
-# countries=[]
-# women leaders
-# countries= ['United States']
-# top 6 deaths/capita
-countries= ['Belgium', 'Spain', 'Italy', 'France', 'United Kingdom', 'Netherlands', 'Switzerland']
-
-# states=['New York', 'New Jersey', 'Massachusetts', 'Louisiana', 'Connecticut', 'Rhode Island']
-states = USA::TERRITORIES - ["District of Columbia"]
-countries=[]
-# states=[]
-include_nyc=false
-governors=false
-
 dates = world.dates
-@graph_days=14
 dates = dates[-@graph_days..]
 h = {}
 0.upto(dates.size-1) do |i|
@@ -56,7 +65,6 @@ g.labels = dates
 g.title = 'Change In Daily Deaths (lower is better)'
 g.line_width=1
 g.dot_radius=2
-# g.hide_dots = true
 g.theme = Gruff::Themes::RAILS_KEYNOTE
 
 @smallest_value=100_000
