@@ -34,7 +34,7 @@ include_nyc=false
 governors=false
 
 dates = world.dates
-@graph_days=21
+@graph_days=14
 dates = dates[-@graph_days..]
 h = {}
 0.upto(dates.size-1) do |i|
