@@ -67,6 +67,9 @@ g.line_width=1
 g.dot_radius=2
 g.theme = Gruff::Themes::RAILS_KEYNOTE
 
+# add .shuffle to the array to get random color assignments each run
+g.replace_colors %w[#332288 #88CCEE #44AA99 #117733 #999933 #DDCC77 #CC6677 #882255 #AA4499]
+
 @smallest_value=100_000
 def write_deaths_to_graph(region, new_deaths, graph, color: nil)
   ma = new_deaths.moving_average
