@@ -43,6 +43,7 @@ class USA
     @republican_governors = []
     states_with_governors = @states.filter do |region, _|
       !TERRITORIES.include? region
+      # !(TERRITORIES+["New York"]).include? region
     end
     states_with_governors.each do |state, data|
       if DEMOCRAT_GOVERNORS.include?(state)
