@@ -30,7 +30,7 @@ countries= ['Belgium', 'Spain', 'Italy', 'France', 'United Kingdom', 'Netherland
 states = USA::TERRITORIES - ["District of Columbia"]
 countries=[]
 # states=[]
-nyc=false
+include_nyc=false
 governors=false
 
 dates = world.dates
@@ -74,7 +74,7 @@ def write_deaths_to_graph(region, new_deaths, graph, color: nil)
   graph.data name, data, color
 end
 
-write_deaths_to_graph('NYC', nyc.data, g) if nyc
+write_deaths_to_graph('NYC', nyc.data, g) if include_nyc
 if governors
   write_deaths_to_graph('Democrat Governors', usa.democrat_governors, g, color: '#00AEF3')
   write_deaths_to_graph('Republican Governors', usa.republican_governors, g, color: '#DE0100')
