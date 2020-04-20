@@ -1,0 +1,11 @@
+Y = 7-day moving average
+of  slope
+of  7-day moving average
+of  daily deaths curve (like on ft.com)
+
+angle up   = concave death curve = bad
+angle down = convex death curve = good
+
+>0% = more deaths each day = bad
+ 0% = same deaths each day (flat curve)
+<0% = fewer deaths each day = good
