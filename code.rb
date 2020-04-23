@@ -35,11 +35,8 @@ require 'pry'
 require_relative './world.rb'
 require_relative './usa.rb'
 require_relative './nyc.rb'
-# days needed for ma and slope calculations, hardcoded because
-# 7-day moving average is hardcoded
-lead_days=13
 
-world = World.new(lead_days)
+world = World.new
 usa = USA.new(world.dates)
 nyc = NYC.new
 

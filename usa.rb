@@ -16,9 +16,18 @@ class USA
       @states[row['state']][row['date']] = row['deaths'].to_f
     end
 
+    # verify assumptions about data sources haven't changed
+    last_state_days = @states.map{|_, data| data.to_a.last[0]}.uniq
+    raise unless 1==last_state_days.size
+    last_state_day = Date.parse(last_state_days.first)
+    last_world_day = Date.parse(world_dates.last)
+    raise unless last_world_day == last_state_day.next_day
+
+    # fill missing days with data (previous day's commulative)
     @states.each do |state, data|
       world_dates.each do |date|
         next if data[date]
+        next if last_world_day.to_s == date # CSVs are 1 day off from one another
         previous_date = Date.parse(date).prev_day.to_s
         @states[state][date] = data[previous_date] || 0.0
       end
@@ -32,9 +41,6 @@ class USA
       @states[state] = data.values
     end
 
-    @states.each do |state, data|
-      @states[state] = Array.new(62,0) + data
-    end
     @states.each do |state, data|
       @states[state] = data.delta_from_commulative
     end
