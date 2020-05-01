@@ -1,7 +1,7 @@
 Y = 7-day moving average
 of  slope
 of  7-day moving average
-of  daily deaths curve (like on ft.com)
+of  new deaths
 
 angle up   = concave death curve = bad
 angle down = convex death curve = good
