@@ -80,12 +80,19 @@ def write_deaths_to_graph(region, new_deaths, graph, color: nil)
   end
   name = "#{region} (#{last_value})"
   graph.data name, data, color
+  data
 end
 
 write_deaths_to_graph('NYC', nyc.data, g) if include_nyc
+write_deaths_to_graph('Boston', boston.data, g) if include_boston
 if governors
-  write_deaths_to_graph('Democrat Governors', usa.democrat_governors, g, color: '#00AEF3')
-  write_deaths_to_graph('Republican Governors', usa.republican_governors, g, color: '#DE0100')
+  d=write_deaths_to_graph('Democrat Governors (sans NY)', usa.democrat_governors, g, color: '#00AEF3')
+  r=write_deaths_to_graph('Republican Governors', usa.republican_governors, g, color: '#DE0100')
+  delta = []
+  d.each_with_index do |e, i|
+    delta[i] = r[i]-e
+  end
+  g.data "Difference", delta, '#FFFFFF'
 end
 countries.each do |country|
   data = world.get_country(country)
