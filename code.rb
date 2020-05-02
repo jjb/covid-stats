@@ -28,6 +28,7 @@ governors=false
 require 'down'
 require "csv"
 require_relative './array_stats.rb'
+require_relative './date_labels.rb'
 require 'gruff'
 require_relative './gruff_monkeypatch.rb'
 require 'pry'
@@ -42,18 +43,7 @@ nyc = NYC.new
 
 dates = world.dates
 dates = dates[-@graph_days..]
-h = {}
-0.upto(dates.size-1) do |i|
-  h[i]=dates[i]
-end
-dates = h
-i=0
-numdates = dates.size
-dates = dates.select! do
-  keep=0==i%7
-  i+=1
-  keep || i==numdates || i==0
-end
+dates = DateLabels.new(Date.parse(dates.first), Date.parse(dates.last)).dates
 g = Gruff::Line.new(2000)
 g.baseline_value = 0
 g.y_axis_increment = 10
